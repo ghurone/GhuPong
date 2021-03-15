@@ -7,7 +7,7 @@ import turtle
 import time
 
 
-def check_screen_colision():
+def check_screen_collision():
 
     # Detecta colisão com a parede de cima
     if ball.ycor() > 290 or ball.ycor() < -290:
@@ -24,11 +24,10 @@ def check_screen_colision():
         scoreboard.r_point()
 
 
-def check_plataform_colision():
+def check_plataform_collision():
     # Detecta a colisão com a plataforma
-    if 20 <= ball.distance(r_plat) < 72.8 and 333 > ball.xcor() >= 330 or \
-         20 <= ball.distance(l_plat) < 72.8 and - 333 < ball.xcor() <= -330:
-        print('entrei')
+    if ball.distance(r_plat) < 72.8 and 340 > ball.xcor() >= 330 or \
+         ball.distance(l_plat) < 72.8 and - 340 < ball.xcor() <= -330:
         ball.bounce_x()
 
 
@@ -71,15 +70,15 @@ if __name__ == '__main__':
     delta = 0
     game_is_on = True
     while game_is_on:
-        time.sleep(1/120)
+        time.sleep(1/120)  # 120 fps, ou 60 fps
 
         screen.update()
         ball.move()
 
-        check_screen_colision()
-        check_plataform_colision()
+        check_screen_collision()
+        check_plataform_collision()
 
-        if delta >= 0.7:
+        if delta >= 0.6:
             bot_mov(r_plat)
             delta = 0
 
