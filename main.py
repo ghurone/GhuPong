@@ -96,7 +96,7 @@ if __name__ == '__main__':
             check_screen_collision()
             check_plataform_collision()
 
-            if d >= 0.4:
+            if d >= 0.6:
                 bot_mov(r_plat)
                 d = 0
 
@@ -104,7 +104,6 @@ if __name__ == '__main__':
                 game_is_on = False
                 screen.clear()
                 screen.bgcolor('black')
-
                 msg = ('O Computador' if scoreboard.r_score > scoreboard.l_score else 'Você') + ' venceu!!'
                 Message(msg)
 
