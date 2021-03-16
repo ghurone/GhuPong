@@ -70,7 +70,7 @@ if __name__ == '__main__':
     delta = 0
     game_is_on = True
     while game_is_on:
-        time.sleep(1/120)  # 120 fps, ou 60 fps
+        time.sleep(1/120)  # 120 fps ou 60 fps ?
 
         screen.update()
         ball.move()
@@ -78,7 +78,7 @@ if __name__ == '__main__':
         check_screen_collision()
         check_plataform_collision()
 
-        if delta >= 0.6:
+        if delta >= 0.5:
             bot_mov(r_plat)
             delta = 0
 

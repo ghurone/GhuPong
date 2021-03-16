@@ -1,5 +1,5 @@
 from turtle import Turtle
-from random import uniform
+from random import uniform, randint
 
 
 class Ball(Turtle):
@@ -18,17 +18,16 @@ class Ball(Turtle):
         self.goto(new_x, new_y)
 
     def bounce_y(self):
-        self.y_move *= -1 * uniform(1, 1.2)
+        self.y_move *= -1 * uniform(1, 1.05)
 
     def bounce_x(self):
-        self.x_move *= -1 * uniform(1.1, 1.2)
-        self.y_move *= 1.1 * uniform(1.1, 1.2)
+        self.x_move *= -1 * uniform(1, 1.05)
 
     def reset_position(self):
         self.goto(0, 0)
-        self.x_move *= -1
-        self.x_move = 6
-        self.y_move = 6
+
+        self.x_move = 6 if self.x_move < 0 else -6
+        self.y_move = 6 if randint(1, 2) == 2 else -6
 
 
 
