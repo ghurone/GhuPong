@@ -67,29 +67,57 @@ if __name__ == '__main__':
     screen.onkeypress(l_plat.go_up, "Up")
     screen.onkeypress(l_plat.go_down, "Down")
 
+    # Run game
+
+    d = 0  # d para o bot movimentar a peça dele
+
+    # Sistema de FPS
+
+    last_time = time.time()
+    amountTicks = 60
+    ns = 1 / amountTicks
     delta = 0
+    frames = 0
+    timer = time.time()
+
     game_is_on = True
     while game_is_on:
-        time.sleep(1/120)  # 120 fps ou 60 fps ?
+        now = time.time()
+        delta += (now - last_time) / ns
+        last_time = now
 
-        screen.update()
-        ball.move()
+        if delta >= 1:
 
-        check_screen_collision()
-        check_plataform_collision()
+            # Renderização do jogo
 
-        if delta >= 0.5:
-            bot_mov(r_plat)
-            delta = 0
+            screen.update()
+            ball.move()
 
-        if scoreboard.l_score == 5 or scoreboard.r_score == 5:
-            game_is_on = False
-            screen.clear()
-            screen.bgcolor('black')
+            check_screen_collision()
+            check_plataform_collision()
 
-            msg = ('O Computador' if scoreboard.r_score > scoreboard.l_score else 'Você') + ' venceu!!'
-            Message(msg)
+            if d >= 0.4:
+                bot_mov(r_plat)
+                d = 0
 
-        delta += 0.1
+            if scoreboard.l_score == 5 or scoreboard.r_score == 5:
+                game_is_on = False
+                screen.clear()
+                screen.bgcolor('black')
+
+                msg = ('O Computador' if scoreboard.r_score > scoreboard.l_score else 'Você') + ' venceu!!'
+                Message(msg)
+
+            d += 0.1
+
+            # FIM DA RENDERIZAÇÃO DO JOGO
+
+            frames += 1
+            delta -= 1
+
+        if time.time() - timer >= 1:
+            print('FPS:', frames)
+            frames = 0
+            timer += 1
 
     screen.exitonclick()

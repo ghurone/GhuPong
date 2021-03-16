@@ -9,8 +9,8 @@ class Ball(Turtle):
         self.color("white")
         self.shape("square")
         self.penup()
-        self.x_move = 6
-        self.y_move = 6
+        self.x_move = uniform(4, 6)
+        self.y_move = uniform(4, 6)
 
     def move(self):
         new_x = self.xcor() + self.x_move
@@ -26,8 +26,8 @@ class Ball(Turtle):
     def reset_position(self):
         self.goto(0, 0)
 
-        self.x_move = 6 if self.x_move < 0 else -6
-        self.y_move = 6 if randint(1, 2) == 2 else -6
+        self.x_move = uniform(4, 6) if self.x_move < 0 else -uniform(4, 6)
+        self.y_move = uniform(4, 6) if randint(1, 2) == 2 else -uniform(4, 6)
 
 
 
