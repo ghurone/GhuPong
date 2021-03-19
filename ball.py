@@ -4,9 +4,9 @@ from random import uniform, randint
 
 class Ball(Turtle):
 
-    def __init__(self):
+    def __init__(self, color='white'):
         super().__init__()
-        self.color("white")
+        self.color(color)
         self.shape("square")
         self.penup()
         self.x_move = uniform(4, 6)
@@ -29,6 +29,16 @@ class Ball(Turtle):
         self.x_move = uniform(4, 6) if self.x_move < 0 else -uniform(4, 6)
         self.y_move = uniform(4, 6) if randint(1, 2) == 2 else -uniform(4, 6)
 
+    def move_at_menu(self):
+        self.move()
+
+        # Detecta colisão com a parede de cima
+        if self.ycor() > 290 or self.ycor() < -290:
+            self.bounce_y()
+
+        # Detecta se a plataforma R falha
+        if self.xcor() > 390 or self.xcor() < -390:
+            self.bounce_x()
 
 
 

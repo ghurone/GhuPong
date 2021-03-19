@@ -1,5 +1,4 @@
-from Windows.menu import MenuWindow
-from Windows.game import GameBOT
+from menu import MenuWindow
 
 
 if __name__ == '__main__':

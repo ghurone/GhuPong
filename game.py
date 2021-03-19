@@ -8,7 +8,7 @@ import time
 
 
 class Gamescreen:
-    def __init__(self):
+    def __init__(self, color_left, color_right, color_ball):
         # Iniciar a Tela
 
         self.screen = turtle.Screen()
@@ -19,9 +19,9 @@ class Gamescreen:
 
         # Inserir os widgets na tela
 
-        self.r_plat = Plat((350, 0))
-        self.l_plat = Plat((-350, 0))
-        self.ball = Ball()
+        self.r_plat = Plat((350, 0), color=color_right)
+        self.l_plat = Plat((-350, 0), color=color_left)
+        self.ball = Ball(color=color_ball)
         self.scoreboard = Scoreboard()
 
         # Traço no meio da tela
@@ -31,6 +31,10 @@ class Gamescreen:
         trace.color('white')
         trace.shapesize(stretch_wid=30, stretch_len=0.2)
         trace.penup()
+
+        # Guardando as cores
+
+        self.cor_left, self.cor_right, self.cor_bola = color_left, color_right, color_ball
 
     def check_screen_collision(self):
 
@@ -56,8 +60,8 @@ class Gamescreen:
 
 
 class GameBOT(Gamescreen):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, color_left, color_right, color_ball):
+        super().__init__(color_left, color_right, color_ball)
 
         self.screen.listen()
         self.screen.onkeypress(self.l_plat.go_up, "Up")
@@ -67,7 +71,7 @@ class GameBOT(Gamescreen):
         if plat.ycor() != self.ball.ycor():
             plat.go_up() if plat.ycor() < self.ball.ycor() else plat.go_down()
 
-    def run_game(self):
+    def run(self):
         # Run game
 
         d = 0  # d para o bot movimentar a peça dele
@@ -106,11 +110,6 @@ class GameBOT(Gamescreen):
                 if self.scoreboard.l_score == 5 or self.scoreboard.r_score == 5:
                     game_is_on = False
                     self.screen.clear()
-                    self.screen.bgcolor('black')
-                    msg = ('O Computador' if self.scoreboard.r_score > self.scoreboard.l_score else 'Você') + ' venceu!!'
-                    Message(msg)
-                    time.sleep(3)
-                    self.screen.clear()
 
                 # FIM DA RENDERIZAÇÃO DO JOGO
 
@@ -122,10 +121,18 @@ class GameBOT(Gamescreen):
                 frames = 0
                 timer += 1
 
+        self.screen.bgcolor('black')
+        Message(('O Computador' if self.scoreboard.r_score > self.scoreboard.l_score else 'Você') + ' venceu!!')
+        time.sleep(3)
+
+        self.screen.clear()
+
+        return self.cor_left, self.cor_right, self.cor_bola
+
 
 class Game2v2(Gamescreen):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, color_left, color_right, color_ball):
+        super().__init__(color_left, color_right, color_ball)
 
         self.screen.listen()
         self.screen.onkeypress(self.r_plat.go_up, "Up")
@@ -133,7 +140,7 @@ class Game2v2(Gamescreen):
         self.screen.onkeypress(self.l_plat.go_up, "w")
         self.screen.onkeypress(self.l_plat.go_down, "s")
 
-    def run_game(self):
+    def run(self):
 
         # Sistema de FPS
 
@@ -163,11 +170,6 @@ class Game2v2(Gamescreen):
                 if self.scoreboard.l_score == 5 or self.scoreboard.r_score == 5:
                     game_is_on = False
                     self.screen.clear()
-                    self.screen.bgcolor('black')
-                    msg = ('P1' if self.scoreboard.r_score > self.scoreboard.l_score else 'P2') + ' venceu!!'
-                    Message(msg)
-                    time.sleep(3)
-                    self.screen.clear()
 
                 # FIM DA RENDERIZAÇÃO DO JOGO
 
@@ -179,12 +181,20 @@ class Game2v2(Gamescreen):
                 frames = 0
                 timer += 1
 
+        self.screen.bgcolor('black')
+        Message(('P1' if self.scoreboard.r_score > self.scoreboard.l_score else 'P2') + ' venceu!!')
+        time.sleep(3)
+
+        self.screen.clear()
+
+        return self.cor_left, self.cor_right, self.cor_bola
+
 
 class GameINF(GameBOT):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, color_left, color_right, color_ball):
+        super().__init__(color_left, color_right, color_ball)
 
-    def run_game(self):
+    def run(self):
         # Run game
 
         d = 0  # d para o bot movimentar a peça dele
@@ -209,6 +219,7 @@ class GameINF(GameBOT):
                 # Renderização do jogo
 
                 self.screen.update()
+
                 self.ball.move()
 
                 self.check_screen_collision()
@@ -223,11 +234,6 @@ class GameINF(GameBOT):
                 if self.scoreboard.r_score == 5:
                     game_is_on = False
                     self.screen.clear()
-                    self.screen.bgcolor('black')
-                    Message('Fim de jogo', pos=(0, 30))
-                    Message(f'Pontuação: {self.scoreboard.l_score}', pos=(0, -30))
-                    time.sleep(5)
-                    self.screen.clear()
 
                 # FIM DA RENDERIZAÇÃO DO JOGO
 
@@ -238,3 +244,12 @@ class GameINF(GameBOT):
                 print('FPS:', frames)
                 frames = 0
                 timer += 1
+
+        self.screen.bgcolor('black')
+        Message('Fim de jogo', pos=(0, 30))
+        Message(f'Pontuação: {self.scoreboard.l_score}', pos=(0, -30))
+        time.sleep(3)
+
+        self.screen.clear()
+
+        return self.cor_left, self.cor_right, self.cor_bola
